@@ -46,6 +46,43 @@ $app->get('/player/{id}', function (Request $request, Response $response, array 
     return $jsonResponse;
 });
 
+$app->post('/player', function (Request $request, Response $response) {
+    $this->logger->addInfo("POST /player/");
+
+    // build query string
+    $createString = "INSERT INTO player ";
+    $fields = $request->getParsedBody();
+    $keysArray = array_keys($fields);
+    $last_key = end($keysArray);
+    $values = '(';
+    $fieldNames = '(';
+    foreach($fields as $field => $value) {
+      $values = $values . "'"."$value"."'";
+      $fieldNames = $fieldNames . "$field";
+      if ($field != $last_key) {
+        // conditionally add a comma to avoid sql syntax problems
+        $values = $values . ", ";
+        $fieldNames = $fieldNames . ", ";
+      }
+    }
+    $values = $values . ')';
+    $fieldNames = $fieldNames . ') VALUES ';
+    $createString = $createString . $fieldNames . $values . ";";
+    // execute query
+    try {
+      $this->db->exec($createString);
+    } catch (\PDOException $e) {
+      var_dump($e);
+      $errorData = array('status' => 400, 'message' => 'Invalid data provided to create person');
+      return $response->withJson($errorData, 400);
+    }
+    // return updated record
+    $person = $this->db->query('SELECT * from player ORDER BY id desc LIMIT 1')->fetch();
+    $jsonResponse = $response->withJson($person);
+
+    return $jsonResponse;
+});
+
 $app->put('/player/{id}', function (Request $request, Response $response, array $args) {
     $id = $args['id'];
     $this->logger->addInfo("PUT /player/".$id);
