@@ -43,6 +43,13 @@ $app->get('/player/{id}', function (Request $request, Response $response, array 
     $person = $this->db->query('SELECT * from player where id='.$id)->fetch();
     $jsonResponse = $response->withJson($person);
 
+    if($person){
+      $response =  $response->withJson($person);
+    } else {
+      $errorData = array('status' => 404, 'message' => 'not found');
+      $response = $response->withJson($errorData, 404);
+    }
+
     return $jsonResponse;
 });
 
@@ -88,7 +95,7 @@ $app->put('/player/{id}', function (Request $request, Response $response, array 
     $this->logger->addInfo("PUT /player/".$id);
 
     // build query string
-    $updateString = "UPDATE people SET ";
+    $updateString = "UPDATE player SET ";
     $fields = $request->getParsedBody();
     $keysArray = array_keys($fields);
     $last_key = end($keysArray);
