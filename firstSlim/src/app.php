@@ -1,5 +1,5 @@
 <?php
-namespace holbein\Slim;
+namespace feather\firstSlim;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
@@ -8,25 +8,25 @@ require './vendor/autoload.php';
 class App
 {
 
-private $app;
-public function __construct($db){
+  private $app;
+  public function __construct($db){
 
-$config['db']['host']   = 'localhost';
-$config['db']['user']   = 'root';
-$config['db']['pass']   = 'root';
-$config['db']['dbname'] = 'apidb';
+      $config['db']['host']   = 'localhost';
+      $config['db']['user']   = 'root';
+      $config['db']['pass']   = 'root';
+      $config['db']['dbname'] = 'apidb';
 
-$app = new \Slim\App(['settings' => $config]);
+      $app = new \Slim\App(['settings' => $config]);
 
-$container = $app->getContainer();
-$container['db'] = $db;
+      $container = $app->getContainer();
+      $container['db'] = $db;
 
-$container['logger'] = function($c) {
-    $logger = new \Monolog\Logger('my_logger');
-    $file_handler = new \Monolog\Handler\StreamHandler('./logs/app.log');
-    $logger->pushHandler($file_handler);
-    return $logger;
-};
+      $container['logger'] = function($c) {
+          $logger = new \Monolog\Logger('my_logger');
+          $file_handler = new \Monolog\Handler\StreamHandler('./logs/app.log');
+          $logger->pushHandler($file_handler);
+          return $logger;
+  };
 
 
 $app->get('/player', function (Request $request, Response $response) {

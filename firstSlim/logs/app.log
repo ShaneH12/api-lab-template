@@ -1,0 +1,4 @@
+[2018-09-12 14:02:54] my_logger.INFO: GET /player [] []
+[2018-09-12 14:04:56] my_logger.INFO: GET /player [] []
+[2018-09-12 14:07:44] my_logger.INFO: GET /player [] []
+[2018-09-12 14:19:19] my_logger.INFO: GET /player [] []

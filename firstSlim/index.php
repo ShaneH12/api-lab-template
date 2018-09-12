@@ -8,5 +8,5 @@ $db = function ($c) {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
 };
-$app = (new holbein\firstSlim\App($db))->get();
+$app = (new feather\firstSlim\App($db))->get();
 $app->run();
