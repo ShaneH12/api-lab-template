@@ -108,6 +108,14 @@ $app->put('/player/{id}', function (Request $request, Response $response, array 
     }
     $updateString = $updateString . " WHERE id = $id;";
 
+      try {
+    $this->db->exec($updateString);
+  } catch (\PDOException $e) {
+    $errorData = array('status' => 400, 'message' => 'Invalid data provided to update');
+    return $response->withJson($errorData, 400);
+
+  }
+
     // execute query
     $this->db->exec($updateString);
     // return updated record
